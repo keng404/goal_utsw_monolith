@@ -1,0 +1,6 @@
+digraph {
+  Rock     [fontname = "Symbol"]
+  Scissors [fontname = "Symbol"]
+  Paper    [fontname = "Symbol"]
+  Rock -> Scissors -> Paper -> Rock
+}

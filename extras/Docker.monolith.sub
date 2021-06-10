@@ -1,0 +1,54 @@
+FROM ubuntu:18.04 AS build1
+LABEL Author="Jeremy Mathews" \
+      Maintainer="b.cantarel@gmail.com"
+ENV DEBIAN_FRONTEND noninteractive
+# install additional requirements
+RUN apt-get update && apt-get install -y \
+   wget \
+   unzip \
+   python3-pip \
+   git \
+   libz-dev \
+   libbz2-dev \
+   liblzma-dev \
+   libssl-dev \
+   libffi-dev \
+   python-pip \
+   python-dev
+
+# Install Python3
+RUN cd /usr/src; wget --no-check-certificate https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz; \
+    tar -zxvf Python-3.8.1.tgz; rm Python-3.8.1.tgz; \
+    cd Python-3.8.1; \
+    ./configure --enable-optimizations; \
+    make altinstall;
+
+RUN apt-get install -y graphviz
+
+# Install Freebayes
+ENV GIT_SSL_NO_VERIFY true
+RUN cd /opt; git clone --recursive --branch v1.2.0 git://github.com/ekg/freebayes.git; \
+    cd freebayes; \
+    make; make install;   
+
+# Install Vt
+RUN apt-get install -y libssl-dev libcurl4-openssl-dev
+RUN cd /opt/bin; wget --no-check-certificate https://github.com/atks/vt/archive/0.57721.tar.gz; \
+    tar xvfz 0.57721.tar.gz; rm -rf 0.57721.tar.gz; \
+    cd vt-0.57721; \
+    make; \
+    mv vt /usr/local/bin/;
+# Install Shimmer
+RUN apt update ; apt-get install -y build-essential  r-base
+RUN R -e "install.packages('statmod',repos = \"http://cran.us.r-project.org\")"
+RUN apt-get install -y  cpanminus
+RUN cpanm CPAN::Meta Module::Build
+RUN cd /opt; wget --no-check-certificate https://github.com/bcantarel/Shimmer/archive/v0.1.2.zip; \
+    unzip v0.1.2.zip; rm v0.1.2.zip; \
+    cd  Shimmer-0.1.2; \
+    perl Build.PL; \
+    ./Build; ./Build test; ./Build install;
+
+# Make destination and work directory
+RUN mkdir -p /opt;
+RUN mkdir -p /opt/bin;
