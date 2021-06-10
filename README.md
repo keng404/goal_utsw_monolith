@@ -20,5 +20,5 @@ docker build -f Docker.monolith -t {YOUR_IMAGE_NAME} .
 - somatic_design/design.txt (somatic design file)
 
 ## Running this in ICA
-- Pipeline diagram[]
-- CWL of this tool/pipeline[]
+- [Pipeline diagram](https://github.com/keng404/goal_utsw_monolith/blob/main/UTSW_dna_monolith_tool.png)
+- [CWL](https://github.com/keng404/goal_utsw_monolith/blob/main/utsw_dna_monolith.nextflow.cwl) of this tool/pipeline
