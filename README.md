@@ -18,3 +18,7 @@ docker build -f Docker.monolith -t {YOUR_IMAGE_NAME} .
 - tool_wrapper_nf.py ( python wrapper that invokes goalConsensus.nf)
 - design.txt ( tumor-only design file)
 - somatic_design/design.txt (somatic design file)
+
+## Running this in ICA
+- Pipeline diagram[]
+- CWL of this tool/pipeline[]
